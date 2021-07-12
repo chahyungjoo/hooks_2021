@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, useRef } from "react";
+
+
+const usePreventLeave = () => {
+  const listener = e => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  const enablePrevent = () => window.addEventListener("beforeunload", listener);
+  const disnablePrevent = () => window.removeEventListener("beforeunload", listener);
+
+  return { enablePrevent, disnablePrevent };
+}
 
 function App() {
+  const { enablePrevent, disnablePrevent } = usePreventLeave();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={enablePrevent}>protect</button>
+      <button onClick={disnablePrevent}>Unprotect</button>
     </div>
   );
 }
